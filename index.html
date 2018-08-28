@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="cssFolderName/Three.css">
+	<link rel="stylesheet" type="text/css" href="icon/style.css">
+	<link rel="stylesheet" type="text/css" href="cssFolderName/iconfont.css">
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+	
+<div id="wrap" class="wrap">
+	<div id="nav1" class="nav1">
+		<div class="meau-left-one">
+			<!-- <div class="left-one-one">View process by</div>
+			<div class="left-one-two">Absolute Frequency</div> -->
+				<p>View process by</p>
+				<span>Absolute Frequency</span>
+			</div>
+		<div class="meau-left-two">
+				<!-- <div class="left-two-one">25.2d</div>
+				<div class="left-two-two">Avg Cucle Time</div> -->
+					<span class="left-two-one">25.2d</span>
+					<span class="left-two-two">Avg Cucle Time</span>
+				</div>
+		<div class="meau-left-three">
+			<!-- <div class="left-three-one">1</div>
+			<div class="left-three-two">of 14 variant</div> -->
+				<span class="left-three-one">1</span>
+				<span class="left-three-two">of 14 variant</span>
+			</div>
+		<div  id="lecon" class="meau-left-con">
+				
+				<!-- <div class="Top-Ranked-Variant">Top Ranked Variant</div> -->
+				<p class="Top-Ranked-Variant">Top Ranked Variant</p>
+				
+				     <todo-item 
+				 		v-for="(item,index) of toptens" 
+				 		:key="index"
+				 		:content="item"	
+				 		:index="index"
+				 		@add="handleadd"
+				 	     >
+				 	 </todo-item>  
+		 	<!--  <ul>
+		 				 	 <li class="left-con-xz" v-for="(item,index) of toptens " @click="handleClick(index)">
+		 					 	 <span class="icon-i"></span>
+		 					 	 <a id="xblock1" href="javascript:;">
+		 						 	 <div class="con-xz-border" >
+		 						 		 <p>{{item.rank}}</p>
+		 						 		 <span id="con-xz-border-border" class="con-xz-border-border">{{item.percentage}}</span>				
+		 						 	 </div>
+		 					 	 </a>
+		 				 	</li>
+		 	 </ul>   -->
+									 
+				 
+				</div>
+		</div>
+			
+
+
+	<div id="nav2" class="nav2">
+		<div class="meau-right-one">
+			<p >Sort cases by</p>
+			<span  class="select">
+				<select class="select-se"  id="select" @change="handleclick2(value)" v-model="value">
+				    <option class="touming" value="id">Case ID</option>
+					<option class="touming" value="start">Start</option>
+					<option class="touming" value="end">End</option>
+					<option class="touming" value="duration">Duration</option> 
+				</select>
+			</span>
+			<span id="exit1"></span>
+		</div>
+
+		<div class="meau-right-con">
+			<div class="con-title">
+				<input type="text" placeholder="case(28)" name="">
+				<button class="iconfont icon-sousuo" type=""></button>
+			</div>
+			<div id="con" class="con-ml">
+
+				 <!-- <a v-for="(item,index) of cases" id="block" href="javascript:;">
+				 					<div class="ml-one">
+				 						<div class="ml-one-left">
+				 							<span>Case{{cases[index].id}}</span>
+				 							<p>5 hours,20 minute</p>
+				 						</div>
+				 						<div class="ml-one-right">
+				 							>
+				 						</div>
+				 					</div>
+				 				</a>  -->
+
+				    <todo-item2 
+				 		v-for="(item,index) of cases" 
+				 		:key="index"
+				 		:content2="item"	
+				 		:index="index"
+				 		@add2="handleclick3(index)"
+				 		@show="show"
+	   				 	>
+				   	</todo-item2> 
+
+			</div>
+		</div>
+	</div>
+
+	<div id="content" v-show="isShow" >
+		<div id="content-up" class="content-up">
+			<div id="content-title" class="content-title">
+			 	<span>{{ msg }}</span>
+			</div> 
+			<span @click="exit" id="exit" class="close"></span>
+			<div class="content-img">
+				
+			</div>
+			<div id="total" class="total">
+				<div id="total-1" class="total-1">
+					<span>Total Duration</span>
+					<p >{{formatSeconds(toduration)}}</p>
+				</div>
+				<div id="total-2" class="total-2">
+					<span>Total Activities</span>
+					<p>{{toactivies}}</p>
+				</div>
+				<div id="total-3" class="total-2">
+					<span>Case Start Time</span>
+					<p>{{formatDateTime(toStart)}}</p>
+				</div>
+				<div id="total-4" class="total-2">
+					<span>Case End Time</span>
+					<p>{{formatDateTime(toEnd)}}</p>
+				</div> 
+				
+			</div>
+		</div>
+
+		<div  class="table">
+			<table id="table1">
+				  <tr>
+ 					<th>Activities</th>
+ 					<th>Start Time</th>
+ 					<th>End Time</th>
+ 					<th>Durtion</th>
+ 					<th>Waiting Time</th>
+ 					<th>Username</th>
+ 				</tr> 
+                 <tr 
+                    v-for="(item,index) of caseDetails" 
+			 		:key="index"
+			 		:content4="item"	
+			 		:index="index"
+                 >
+  					<td>{{data.caseDetail[index].name}}</td>
+  					<td>{{formatDateTime(data.caseDetail[index].start)}}</td>
+  					<td>{{formatDateTime(data.caseDetail[index].end)}}</td>
+  					<td>{{formatSeconds(data.caseDetail[index].duration)}}</td>
+  					<td>{{data.caseDetail[index].waitingTime}}</td>
+  					<td> {{data.caseDetail[index].userName}}</td>
+  				</tr>   
+			</table>
+		</div>
+	</div> 
+</div>
+<script src="jsFolderName/vue.js"></script>
+</body>
+</html>
